@@ -180,11 +180,7 @@ class _HeaderCompact extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Chip(
-          avatar: const Icon(Icons.schedule_rounded, size: 16),
-          label: Text(experience.duration),
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
+        _DurationChip(duration: experience.duration),
       ],
     );
   }
@@ -222,12 +218,35 @@ class _HeaderWide extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        Chip(
-          avatar: const Icon(Icons.schedule_rounded, size: 16),
-          label: Text(experience.duration),
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
+        _DurationChip(duration: experience.duration),
       ],
+    );
+  }
+}
+
+class _DurationChip extends StatelessWidget {
+  const _DurationChip({required this.duration});
+
+  final String duration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      backgroundColor: const Color(0xFFE6F3F7),
+      side: const BorderSide(color: Color(0x332A6E84)),
+      avatar: const Icon(
+        Icons.schedule_rounded,
+        size: 16,
+        color: Color(0xFF1F7A8C),
+      ),
+      label: Text(
+        duration,
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+          color: const Color(0xFF0E5463),
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
     );
   }
 }
