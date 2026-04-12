@@ -68,8 +68,6 @@ class SectionTabs extends StatelessWidget {
         return Icons.person_rounded;
       case PortfolioSection.workExperience:
         return Icons.work_history_rounded;
-      case PortfolioSection.projects:
-        return Icons.dashboard_customize_rounded;
       case PortfolioSection.contact:
         return Icons.contact_phone_rounded;
     }
@@ -83,8 +81,6 @@ class SectionTabs extends StatelessWidget {
         return 'About Me';
       case PortfolioSection.workExperience:
         return 'Experience';
-      case PortfolioSection.projects:
-        return 'Projects';
       case PortfolioSection.contact:
         return 'Contact';
     }

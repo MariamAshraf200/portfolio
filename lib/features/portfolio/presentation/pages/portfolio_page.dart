@@ -10,7 +10,6 @@ import 'package:protofolio/features/portfolio/presentation/widgets/about_section
 import 'package:protofolio/features/portfolio/presentation/widgets/contact_section.dart';
 import 'package:protofolio/features/portfolio/presentation/widgets/hero_header.dart';
 import 'package:protofolio/features/portfolio/presentation/widgets/portfolio_shell.dart';
-import 'package:protofolio/features/portfolio/presentation/widgets/projects_section.dart';
 import 'package:protofolio/features/portfolio/presentation/widgets/section_tabs.dart';
 import 'package:protofolio/features/portfolio/presentation/widgets/work_experience_section.dart';
 
@@ -39,7 +38,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
       PortfolioSection.home: GlobalKey(),
       PortfolioSection.about: GlobalKey(),
       PortfolioSection.workExperience: GlobalKey(),
-      PortfolioSection.projects: GlobalKey(),
       PortfolioSection.contact: GlobalKey(),
     };
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -129,13 +127,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                         .workExperience]!,
                                 child: WorkExperienceSection(
                                   workExperiences: state.workExperiences,
-                                ),
-                              ),
-                              _SectionContainer(
-                                sectionKey:
-                                    _sectionKeys[PortfolioSection.projects]!,
-                                child: ProjectsSection(
-                                  projects: state.projects,
                                 ),
                               ),
                               _SectionContainer(
