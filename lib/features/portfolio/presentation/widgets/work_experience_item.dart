@@ -7,11 +7,13 @@ class WorkExperienceItem extends StatefulWidget {
     required this.experience,
     required this.index,
     required this.showTimelineConnector,
+    required this.onOpenCompanyLink,
   });
 
   final WorkExperience experience;
   final int index;
   final bool showTimelineConnector;
+  final ValueChanged<String> onOpenCompanyLink;
 
   @override
   State<WorkExperienceItem> createState() => _WorkExperienceItemState();
@@ -75,9 +77,15 @@ class _WorkExperienceItemState extends State<WorkExperienceItem> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (compact)
-                          _HeaderCompact(experience: widget.experience)
+                          _HeaderCompact(
+                            experience: widget.experience,
+                            onOpenCompanyLink: widget.onOpenCompanyLink,
+                          )
                         else
-                          _HeaderWide(experience: widget.experience),
+                          _HeaderWide(
+                            experience: widget.experience,
+                            onOpenCompanyLink: widget.onOpenCompanyLink,
+                          ),
                         const SizedBox(height: 12),
                         ...responsibilities.map(
                           (responsibility) => Padding(
@@ -110,6 +118,11 @@ class _WorkExperienceItemState extends State<WorkExperienceItem> {
                             ),
                           ),
                         ),
+                        if (widget.experience.showApkDownloadButton)
+                          _ApkDownloadButton(
+                            apkDownloadUrl: widget.experience.apkDownloadUrl,
+                            onOpenCompanyLink: widget.onOpenCompanyLink,
+                          ),
                       ],
                     );
                   },
@@ -156,12 +169,18 @@ class _TimelineNode extends StatelessWidget {
 }
 
 class _HeaderCompact extends StatelessWidget {
-  const _HeaderCompact({required this.experience});
+  const _HeaderCompact({
+    required this.experience,
+    required this.onOpenCompanyLink,
+  });
 
   final WorkExperience experience;
+  final ValueChanged<String> onOpenCompanyLink;
 
   @override
   Widget build(BuildContext context) {
+    final hasDuration = experience.duration.trim().isNotEmpty;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -172,27 +191,37 @@ class _HeaderCompact extends StatelessWidget {
           ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 6),
-        Text(
-          experience.companyName,
+        _CompanyNameText(
+          companyName: experience.companyName,
+          companyUrl: experience.companyUrl,
+          onOpenCompanyLink: onOpenCompanyLink,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: const Color(0xFF2F5A6E),
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 10),
-        _DurationChip(duration: experience.duration),
+        if (hasDuration) ...[
+          const SizedBox(height: 10),
+          _DurationChip(duration: experience.duration),
+        ],
       ],
     );
   }
 }
 
 class _HeaderWide extends StatelessWidget {
-  const _HeaderWide({required this.experience});
+  const _HeaderWide({
+    required this.experience,
+    required this.onOpenCompanyLink,
+  });
 
   final WorkExperience experience;
+  final ValueChanged<String> onOpenCompanyLink;
 
   @override
   Widget build(BuildContext context) {
+    final hasDuration = experience.duration.trim().isNotEmpty;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -207,8 +236,10 @@ class _HeaderWide extends StatelessWidget {
                 ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 6),
-              Text(
-                experience.companyName,
+              _CompanyNameText(
+                companyName: experience.companyName,
+                companyUrl: experience.companyUrl,
+                onOpenCompanyLink: onOpenCompanyLink,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: const Color(0xFF2F5A6E),
                   fontWeight: FontWeight.w600,
@@ -217,9 +248,45 @@ class _HeaderWide extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 12),
-        _DurationChip(duration: experience.duration),
+        if (hasDuration) ...[
+          const SizedBox(width: 12),
+          _DurationChip(duration: experience.duration),
+        ],
       ],
+    );
+  }
+}
+
+class _CompanyNameText extends StatelessWidget {
+  const _CompanyNameText({
+    required this.companyName,
+    required this.companyUrl,
+    required this.onOpenCompanyLink,
+    required this.style,
+  });
+
+  final String companyName;
+  final String? companyUrl;
+  final ValueChanged<String> onOpenCompanyLink;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    if (companyUrl == null || companyUrl!.isEmpty) {
+      return Text(companyName, style: style);
+    }
+
+    final linkStyle = style?.copyWith(
+      decoration: TextDecoration.underline,
+      color: const Color(0xFF0E5463),
+    );
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => onOpenCompanyLink(companyUrl!),
+        child: Text(companyName, style: linkStyle),
+      ),
     );
   }
 }
@@ -247,6 +314,30 @@ class _DurationChip extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
+    );
+  }
+}
+
+class _ApkDownloadButton extends StatelessWidget {
+  const _ApkDownloadButton({
+    required this.apkDownloadUrl,
+    required this.onOpenCompanyLink,
+  });
+
+  final String? apkDownloadUrl;
+  final ValueChanged<String> onOpenCompanyLink;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasUrl = apkDownloadUrl != null && apkDownloadUrl!.isNotEmpty;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: FilledButton.icon(
+        onPressed: hasUrl ? () => onOpenCompanyLink(apkDownloadUrl!) : null,
+        icon: const Icon(Icons.download_rounded, size: 18),
+        label: Text(hasUrl ? 'Download APK' : 'Download APK (Link soon)'),
+      ),
     );
   }
 }

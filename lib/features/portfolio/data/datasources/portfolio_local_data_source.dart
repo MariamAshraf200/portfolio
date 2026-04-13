@@ -50,11 +50,23 @@ class PortfolioLocalDataSource {
       WorkExperienceModel(
         jobTitle: 'Junior Flutter Developer',
         companyName: 'روح مطروح | Rouh Matrouh',
+        companyUrl: 'https://www.rouh-matrouh.com/',
         duration: 'Mar 2025 - Present',
         keyResponsibilities: [
           'Built and maintained Flutter applications following Clean Architecture and SOLID principles.',
           'Implemented robust state management and clean coding practices to keep features scalable.',
           'Collaborated on continuous product improvements with a quality-focused development flow.',
+        ],
+      ),
+      WorkExperienceModel(
+        jobTitle: 'Flutter Developer (Personal App)',
+        companyName: 'Step Done',
+        duration: '',
+        showApkDownloadButton: true,
+        keyResponsibilities: [
+          'Built Step Done, a Flutter to-do and planning application that helps users organize tasks and manage time efficiently.',
+          'Applied Clean Code and Clean Architecture principles to keep features maintainable and scalable.',
+          'Integrated Hive for local storage, Google Authentication, and notification reminders.',
         ],
       ),
       WorkExperienceModel(

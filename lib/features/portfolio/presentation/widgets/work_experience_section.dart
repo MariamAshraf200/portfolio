@@ -3,9 +3,14 @@ import 'package:protofolio/features/portfolio/domain/entities/work_experience.da
 import 'package:protofolio/features/portfolio/presentation/widgets/work_experience_item.dart';
 
 class WorkExperienceSection extends StatelessWidget {
-  const WorkExperienceSection({super.key, required this.workExperiences});
+  const WorkExperienceSection({
+    super.key,
+    required this.workExperiences,
+    required this.onOpenCompanyLink,
+  });
 
   final List<WorkExperience> workExperiences;
+  final ValueChanged<String> onOpenCompanyLink;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,10 @@ class WorkExperienceSection extends StatelessWidget {
           builder: (context, constraints) {
             final isDesktop = constraints.maxWidth >= 980;
             if (!isDesktop) {
-              return _ExperienceTimeline(workExperiences: workExperiences);
+              return _ExperienceTimeline(
+                workExperiences: workExperiences,
+                onOpenCompanyLink: onOpenCompanyLink,
+              );
             }
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +50,10 @@ class WorkExperienceSection extends StatelessWidget {
                 const SizedBox(width: 18),
                 Expanded(
                   flex: 7,
-                  child: _ExperienceTimeline(workExperiences: workExperiences),
+                  child: _ExperienceTimeline(
+                    workExperiences: workExperiences,
+                    onOpenCompanyLink: onOpenCompanyLink,
+                  ),
                 ),
               ],
             );
@@ -93,9 +104,13 @@ class _SummaryCard extends StatelessWidget {
 }
 
 class _ExperienceTimeline extends StatelessWidget {
-  const _ExperienceTimeline({required this.workExperiences});
+  const _ExperienceTimeline({
+    required this.workExperiences,
+    required this.onOpenCompanyLink,
+  });
 
   final List<WorkExperience> workExperiences;
+  final ValueChanged<String> onOpenCompanyLink;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +128,7 @@ class _ExperienceTimeline extends StatelessWidget {
                 experience: experience,
                 index: index,
                 showTimelineConnector: !isLast,
+                onOpenCompanyLink: onOpenCompanyLink,
               ),
             );
           })

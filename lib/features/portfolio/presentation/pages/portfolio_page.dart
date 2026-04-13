@@ -127,6 +127,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                         .workExperience]!,
                                 child: WorkExperienceSection(
                                   workExperiences: state.workExperiences,
+                                  onOpenCompanyLink: _openRawUrl,
                                 ),
                               ),
                               _SectionContainer(
